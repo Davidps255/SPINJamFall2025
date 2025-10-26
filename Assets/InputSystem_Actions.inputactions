@@ -28,7 +28,7 @@
                     "name": "Attack",
                     "type": "Button",
                     "id": "2a1aa273-94ef-448d-a251-152e4a354629",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -83,6 +83,15 @@
                     "type": "PassThrough",
                     "id": "b163771b-48bb-4550-97ac-775fdd56c3b7",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Mask",
+                    "type": "Button",
+                    "id": "81d9ec5f-6034-44a8-8720-06f9eba1a76c",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -471,6 +480,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a3066ceb-7431-46c5-bae0-2a2bca09a208",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Mask",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
