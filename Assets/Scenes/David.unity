@@ -615,6 +615,11 @@ MonoBehaviour:
   MoveInput: {x: 0, y: 0}
   LookInput: {x: 0, y: 0}
   SprintInput: 0
+  Masked: 0
+  MaskTime: 3
+  Corruption: 0
+  MaskingCorruption: 10
+  CorruptionRate: 1
   fpCamera: {fileID: 1333904786}
   characterController: {fileID: 515173119}
 --- !u!114 &515173122
