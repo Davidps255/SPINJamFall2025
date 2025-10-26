@@ -55,7 +55,6 @@ namespace Farmer {
         public float VerticalVelocity = 0f;
         public Vector3 CurrentVelocity { get; private set; }
         public float CurrentSpeed { get; private set; }
-        private bool wasGrounded = false;
         public bool IsGrounded => characterController.isGrounded;
 
         [Header("Input")]
