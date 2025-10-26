@@ -29,6 +29,10 @@ namespace Farmer {
             }
         }
 
+        private void OnMask(InputValue value) {
+            FPController.Mask();
+        }
+
         #endregion
 
 

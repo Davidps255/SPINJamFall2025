@@ -55,13 +55,21 @@ namespace Farmer {
         public float VerticalVelocity = 0f;
         public Vector3 CurrentVelocity { get; private set; }
         public float CurrentSpeed { get; private set; }
-        private bool wasGrounded = false;
         public bool IsGrounded => characterController.isGrounded;
 
         [Header("Input")]
         public Vector2 MoveInput;
         public Vector2 LookInput;
         public bool SprintInput;
+        public bool Masked;
+        private bool MaskDebounce = false;
+
+        [Header("Gameplay Parameters")]
+        [Tooltip("This is how long it takes to mask as well as delay you from swapping")]
+        public float MaskTime = 3.0f;
+        public float Corruption = 0f;
+        public float MaskingCorruption = 10f;
+        public float CorruptionRate = 1f;
 
         [Header("Components")]
         [SerializeField] CinemachineCamera fpCamera;
@@ -81,6 +89,9 @@ namespace Farmer {
             MoveUpdate();
             LookUpdate();
             CameraUpdate();
+            if (Masked) {
+                Corruption += CorruptionRate * Time.deltaTime;
+            }
         }
 
         #endregion
@@ -95,6 +106,27 @@ namespace Farmer {
             }
 
             VerticalVelocity = Mathf.Sqrt(JumpHeight * -2 * Physics.gravity.y * GravityScale);
+        }
+
+        IEnumerator MyCoroutine() {
+            if (!MaskDebounce) {
+                MaskDebounce = true;
+                if (Masked) {
+                    print("Take mask off");
+                    Masked = false;
+                    yield return new WaitForSeconds(MaskTime);
+                } else {
+                    yield return new WaitForSeconds(MaskTime);
+                    print("Put mask on");
+                    Corruption += MaskingCorruption;
+                    Masked = true;
+                }
+                MaskDebounce = false;
+            }
+        }
+
+        public void Mask() {
+            StartCoroutine("MyCoroutine");
         }
 
         private void MoveUpdate() {
