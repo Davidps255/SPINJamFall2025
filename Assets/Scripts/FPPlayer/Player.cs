@@ -6,6 +6,8 @@ namespace Farmer {
     public class Player : MonoBehaviour {
         [Header("Components")]
         [SerializeField] FPController FPController;
+        [SerializeField] GameObject FlashlightLight;
+        private bool FlashlightActive = false;
 
 
 
@@ -29,8 +31,26 @@ namespace Farmer {
             }
         }
 
-        private void OnMask(InputValue value) {
+        private void OnMask(InputValue value)
+        {
             FPController.Mask();
+        }
+        
+        private void OnFlashlight(InputValue value)
+        {
+            if (value.isPressed)
+            {
+                if (FlashlightActive == false)
+                {
+                    FlashlightLight.gameObject.SetActive(true);
+                    FlashlightActive = true;
+                }
+                else
+                {
+                    FlashlightLight.gameObject.SetActive(false);
+                    FlashlightActive = false;
+                }
+            }
         }
 
         #endregion
