@@ -1,47 +1,87 @@
 using UnityEngine;
+using UnityEngine.AI;
 
-public class EnemyProximityChase : MonoBehaviour
+public class EnemyNavMeshSight : MonoBehaviour
 {
+    [Header("References")]
     public Transform player;
-    public float chaseRange = 10f;
-    public float speed = 4f;
+    private NavMeshAgent agent;
+
+    [Header("Detection Settings")]
+    public float proximityRange = 8f;
+    public float sightMultiplier = 2f;
+    public float fieldOfView = 90f; // degrees
+    public float heightOffset = 1.5f; // "eye" height
     public float killDistance = 1.2f;
+
+    private bool isChasing = false;
+
+    void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
 
     void Update()
     {
         if (player == null) return;
 
-        // Measure distance to player
         float distance = Vector3.Distance(transform.position, player.position);
+        float sightRange = proximityRange * sightMultiplier;
 
-        // If within chase range, move toward player
-        if (distance <= chaseRange)
+        // If player is within proximity OR visible in sight
+        if (distance <= proximityRange || CanSeePlayer(sightRange))
         {
-            Vector3 direction = (player.position - transform.position).normalized;
-            direction.y = 0; // stay on the ground
-            transform.position += direction * speed * Time.deltaTime;
-
-            // Rotate to face player
-            transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+            isChasing = true;
+            agent.SetDestination(player.position);
+        }
+        else if (isChasing && distance > sightRange)
+        {
+            // Lost player beyond sight range
+            isChasing = false;
+            agent.ResetPath();
         }
 
-        // Kill player if close enough
+        // Kill if close enough
         if (distance <= killDistance)
         {
             KillPlayer();
         }
     }
 
-    void KillPlayer()
+    bool CanSeePlayer(float range)
     {
-        Debug.Log("Player caught!");
-        Destroy(player.gameObject); // You can replace this later with respawn logic
+        Vector3 directionToPlayer = player.position - transform.position;
+        float angle = Vector3.Angle(transform.forward, directionToPlayer);
+
+        if (angle < fieldOfView * 0.5f)
+        {
+            RaycastHit hit;
+            Vector3 eyePosition = transform.position + Vector3.up * heightOffset;
+
+            if (Physics.Raycast(eyePosition, directionToPlayer.normalized, out hit, range))
+            {
+                if (hit.transform.CompareTag("Player"))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    // Optional: Draw the chase range in the editor
+    void KillPlayer()
+    {
+        Debug.Log("Player caught! (Kill logic to be added later)");
+        // We'll implement kill logic next step.
+    }
+
     void OnDrawGizmosSelected()
     {
+        // Visualize proximity and sight range
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, chaseRange);
+        Gizmos.DrawWireSphere(transform.position, proximityRange);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, proximityRange * sightMultiplier);
     }
 }
