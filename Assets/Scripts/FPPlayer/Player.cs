@@ -1,14 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 namespace Farmer {
     [RequireComponent(typeof(FPController))]
     public class Player : MonoBehaviour {
         [Header("Components")]
         [SerializeField] FPController FPController;
-        [SerializeField] GameObject FlashlightLight;
-        private bool FlashlightActive = false;
-
 
 
         #region Input Handling
@@ -40,16 +38,7 @@ namespace Farmer {
         {
             if (value.isPressed)
             {
-                if (FlashlightActive == false)
-                {
-                    FlashlightLight.gameObject.SetActive(true);
-                    FlashlightActive = true;
-                }
-                else
-                {
-                    FlashlightLight.gameObject.SetActive(false);
-                    FlashlightActive = false;
-                }
+                FPController.ToggleFlashlight();
             }
         }
 
@@ -63,9 +52,45 @@ namespace Farmer {
             if (FPController == null) FPController = GetComponent<FPController>();
         }
 
-        private void Start() {
+        private void Start()
+        {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            FPController.FlashlightActive = false;
+            FPController.FlashlightLight.gameObject.SetActive(false);
+            FPController.BatteryIndicator.color = Color.green;
+        }
+        
+        private void Update()
+        {
+            if (FPController.FlashlightActive)
+            {
+                FPController.BatteryCurrent = Mathf.Clamp(FPController.BatteryCurrent - FPController.BatteryDrain, 0f, FPController.BatteryMax);
+                if (FPController.BatteryCurrent > FPController.LowBatteryThreshold)
+                {
+                   FPController.BatteryIndicator.color = Color.green;
+                }
+                else if (FPController.BatteryCurrent > 0 && !FPController.DeadBattery)
+                {
+                    FPController.BatteryIndicator.color = Color.yellow;
+                }
+                if (FPController.BatteryCurrent <= 0)
+                {
+                    FPController.OutOfBattery();
+                    FPController.BatteryIndicator.color = Color.red;
+                }
+            }
+            else
+            {
+                FPController.BatteryCurrent = Mathf.Clamp(FPController.BatteryCurrent + FPController.BatteryRecharge, 0f, FPController.BatteryMax);
+            }
+            if (FPController.DeadBattery == true)
+            {
+                if (FPController.BatteryCurrent >= FPController.BatteryThreshold)
+                {
+                    FPController.DeadBattery = false;
+                }
+            }
         }
 
         #endregion
