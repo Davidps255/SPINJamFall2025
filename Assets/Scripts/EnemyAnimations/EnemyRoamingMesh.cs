@@ -13,6 +13,7 @@ public class EnemyRoamingMesh : MonoBehaviour
     public float fieldOfView = 90f;
     public float heightOffset = 1.5f;
     public float killDistance = 1.2f;
+    public bool roamer = true;
 
     [Header("Roaming Settings")]
     public float roamRadius = 10f;
@@ -63,7 +64,7 @@ public class EnemyRoamingMesh : MonoBehaviour
         }
 
         // --- ROAMING ---
-        if (!isChasing)
+        if (!isChasing && roamer)
         {
             roamTimer += Time.deltaTime;
             if (!agent.pathPending && agent.remainingDistance < 0.5f)
@@ -104,13 +105,16 @@ public class EnemyRoamingMesh : MonoBehaviour
 
     void PickNewRoamDestination()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * roamRadius;
-        randomDirection += transform.position;
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, roamRadius, NavMesh.AllAreas))
+        if (roamer)
         {
-            agent.SetDestination(hit.position);
+            Vector3 randomDirection = Random.insideUnitSphere * roamRadius;
+            randomDirection += transform.position;
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, roamRadius, NavMesh.AllAreas))
+            {
+                agent.SetDestination(hit.position);
+            }
         }
     }
 
