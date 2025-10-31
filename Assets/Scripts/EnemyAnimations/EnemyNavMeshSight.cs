@@ -15,10 +15,12 @@ public class EnemyNavMeshSight : MonoBehaviour
     public float killDistance = 1.2f;
 
     private bool isChasing = false;
+    private AudioSource audioSource;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -31,7 +33,15 @@ public class EnemyNavMeshSight : MonoBehaviour
         // If player is within proximity OR visible in sight
         if (distance <= proximityRange || CanSeePlayer(sightRange))
         {
-            isChasing = true;
+            //isChasing = true;
+            if (!isChasing)
+            {
+                isChasing = true;
+                if (audioSource != null && !audioSource.isPlaying)
+                {
+                    audioSource.Play();
+                }
+            }
             agent.SetDestination(player.position);
         }
         else if (isChasing && distance > sightRange)
@@ -39,6 +49,10 @@ public class EnemyNavMeshSight : MonoBehaviour
             // Lost player beyond sight range
             isChasing = false;
             agent.ResetPath();
+            if (audioSource != null && audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
         }
 
         // Kill if close enough

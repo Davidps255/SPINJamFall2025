@@ -20,10 +20,13 @@ public class EnemyRoamingMesh : MonoBehaviour
 
     private bool isChasing = false;
     private float roamTimer;
+    private AudioSource audioSource;
+
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
         PickNewRoamDestination();
     }
 
@@ -37,7 +40,15 @@ public class EnemyRoamingMesh : MonoBehaviour
         // --- DETECTION ---
         if (distance <= proximityRange || CanSeePlayer(sightRange))
         {
-            isChasing = true;
+            //isChasing = true;
+            if (!isChasing) 
+            {
+                isChasing = true;
+                if (audioSource != null && !audioSource.isPlaying)
+                {
+                    audioSource.Play();
+                }
+            }
             agent.SetDestination(player.position);
         }
         else if (isChasing && distance > sightRange)
@@ -45,6 +56,10 @@ public class EnemyRoamingMesh : MonoBehaviour
             // Lost player
             isChasing = false;
             roamTimer = 0f;
+            if (audioSource != null && audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
         }
 
         // --- ROAMING ---
