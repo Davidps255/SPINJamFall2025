@@ -71,6 +71,19 @@ namespace Farmer {
         public float MaskingCorruption = 10f;
         public float CorruptionRate = 1f;
 
+        [Header("Flashlight Parameters")]
+        [Tooltip("This section controls flashlight battery life, drain and recharge rate")]
+        public GameObject FlashlightLight;
+        public Light BatteryIndicator;
+        public float BatteryCurrent = 10000f;
+        public float BatteryMax = 10000f;
+        public float BatteryDrain = 1f;
+        public float BatteryRecharge = 1f;
+        public bool FlashlightActive = false;
+        public float BatteryThreshold = 500f;
+        public float LowBatteryThreshold = 3000f;
+        public bool DeadBattery = false;
+
         [Header("Components")]
         [SerializeField] CinemachineCamera fpCamera;
         [SerializeField] CharacterController characterController;
@@ -167,16 +180,40 @@ namespace Farmer {
             transform.Rotate(Vector3.up * input.x);
         }
 
-        private void CameraUpdate() {
+        private void CameraUpdate()
+        {
             float targetFOV = CameraNormalFOV;
 
-            if (Sprinting) {
+            if (Sprinting)
+            {
                 float speedRatio = CurrentSpeed / SprintSpeed;
 
                 targetFOV = Mathf.Lerp(CameraNormalFOV, CameraSprintFOV, speedRatio);
             }
 
             fpCamera.Lens.FieldOfView = Mathf.Lerp(fpCamera.Lens.FieldOfView, targetFOV, CameraFOVSmoothing * Time.deltaTime);
+        }
+
+        public void ToggleFlashlight()
+        {
+            if (BatteryCurrent < BatteryThreshold && DeadBattery) return;
+            else if (FlashlightActive == false)
+            {
+                FlashlightLight.gameObject.SetActive(true);
+                FlashlightActive = true;
+            }
+            else
+            {
+                FlashlightLight.gameObject.SetActive(false);
+                FlashlightActive = false;
+            }
+        }
+
+        public void OutOfBattery()
+        {
+            FlashlightLight.gameObject.SetActive(false);
+            FlashlightActive = false;
+            DeadBattery = true;
         }
 
         #endregion
