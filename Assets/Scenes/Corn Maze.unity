@@ -4405,6 +4405,11 @@ Transform:
   - {fileID: 296962473}
   m_Father: {fileID: 1830200515}
   m_LocalEulerAnglesHint: {x: 0, y: -359.999, z: 0}
+--- !u!4 &466214421 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4711688771835115519, guid: 2751404e9835de74b819d14086b26eea, type: 3}
+  m_PrefabInstance: {fileID: 1941764346}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &470140430
 GameObject:
   m_ObjectHideFlags: 0
@@ -4585,7 +4590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5eef41a18603469b8655e5e46be11d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRoamingMesh
-  player: {fileID: 0}
+  player: {fileID: 466214421}
   proximityRange: 8
   sightMultiplier: 2
   fieldOfView: 90
@@ -4869,7 +4874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5eef41a18603469b8655e5e46be11d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRoamingMesh
-  player: {fileID: 0}
+  player: {fileID: 466214421}
   proximityRange: 8
   sightMultiplier: 2
   fieldOfView: 90
@@ -8119,7 +8124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5eef41a18603469b8655e5e46be11d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRoamingMesh
-  player: {fileID: 0}
+  player: {fileID: 466214421}
   proximityRange: 8
   sightMultiplier: 2
   fieldOfView: 90
@@ -10492,7 +10497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5eef41a18603469b8655e5e46be11d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRoamingMesh
-  player: {fileID: 0}
+  player: {fileID: 466214421}
   proximityRange: 8
   sightMultiplier: 2
   fieldOfView: 90
@@ -18141,7 +18146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5eef41a18603469b8655e5e46be11d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRoamingMesh
-  player: {fileID: 0}
+  player: {fileID: 466214421}
   proximityRange: 8
   sightMultiplier: 2
   fieldOfView: 90
@@ -20817,7 +20822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5eef41a18603469b8655e5e46be11d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRoamingMesh
-  player: {fileID: 0}
+  player: {fileID: 466214421}
   proximityRange: 8
   sightMultiplier: 2
   fieldOfView: 90
