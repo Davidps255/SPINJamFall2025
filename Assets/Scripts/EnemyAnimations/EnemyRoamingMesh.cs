@@ -1,18 +1,22 @@
+using System.Collections;
+using Farmer;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyRoamingMesh : MonoBehaviour
 {
     [Header("References")]
-    public Transform player;
+    public GameObject player;
     private NavMeshAgent agent;
 
     [Header("Detection Settings")]
     public float proximityRange = 8f;
+    public float sightRange = 8f;
     public float sightMultiplier = 2f;
     public float fieldOfView = 90f;
     public float heightOffset = 1.5f;
     public float killDistance = 1.2f;
+    public float corruptionDMG = 20f;
     public bool roamer = true;
 
     [Header("Roaming Settings")]
@@ -22,6 +26,7 @@ public class EnemyRoamingMesh : MonoBehaviour
     private bool isChasing = false;
     private float roamTimer;
     private AudioSource audioSource;
+
 
 
     void Start()
@@ -35,8 +40,7 @@ public class EnemyRoamingMesh : MonoBehaviour
     {
         if (player == null) return;
 
-        float distance = Vector3.Distance(transform.position, player.position);
-        float sightRange = proximityRange * sightMultiplier;
+        float distance = Vector3.Distance(transform.position, player.transform.position);
 
         // --- DETECTION ---
         if (distance <= proximityRange || CanSeePlayer(sightRange))
@@ -50,7 +54,7 @@ public class EnemyRoamingMesh : MonoBehaviour
                     audioSource.Play();
                 }
             }
-            agent.SetDestination(player.position);
+            agent.SetDestination(player.transform.position);
         }
         else if (isChasing && distance > sightRange)
         {
@@ -59,7 +63,7 @@ public class EnemyRoamingMesh : MonoBehaviour
             roamTimer = 0f;
             if (audioSource != null && audioSource.isPlaying)
             {
-                audioSource.Stop();
+                StartCoroutine(FadeOut(audioSource, 5));
             }
         }
 
@@ -86,7 +90,7 @@ public class EnemyRoamingMesh : MonoBehaviour
 
     bool CanSeePlayer(float range)
     {
-        Vector3 directionToPlayer = player.position - transform.position;
+        Vector3 directionToPlayer = player.transform.position - transform.position;
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
 
         if (angle < fieldOfView * 0.5f)
@@ -120,7 +124,8 @@ public class EnemyRoamingMesh : MonoBehaviour
 
     void KillPlayer()
     {
-        Debug.Log("Player caught! (Kill logic to be added later)");
+        player.GetComponent<FPController>().Corruption += corruptionDMG;
+        Destroy(gameObject);
     }
 
     void OnDrawGizmosSelected()
@@ -133,5 +138,16 @@ public class EnemyRoamingMesh : MonoBehaviour
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, roamRadius);
+    }
+
+    public IEnumerator FadeOut(AudioSource audioSource, float fadeTime) {
+        float startVolume = audioSource.volume;
+        while (audioSource.volume > 0) {
+            audioSource.volume -= startVolume * Time.deltaTime / fadeTime;
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume;
     }
 }

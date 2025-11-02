@@ -35,7 +35,7 @@ public class EnemyProximityChase : MonoBehaviour
     void KillPlayer()
     {
         Debug.Log("Player caught!");
-        Destroy(player.gameObject); // placeholder for now
+        Destroy(gameObject); // placeholder for now
     }
 
     void OnDrawGizmosSelected()
