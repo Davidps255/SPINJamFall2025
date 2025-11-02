@@ -70,6 +70,17 @@ namespace Farmer {
         public float Corruption = 0f;
         public float MaskingCorruption = 10f;
         public float CorruptionRate = 1f;
+        private float State = 0f;
+        public Material WallMaterial;
+        public Material OneWayMaterial;
+        public Material FloorMaterial;
+        public Texture2D live;
+        public Texture2D dying;
+        public Texture2D dying2;
+        public Texture2D dead;
+        public Texture2D rich;
+        public Texture2D dry;
+        public Texture2D dark;
 
         [Header("Flashlight Parameters")]
         [Tooltip("This section controls flashlight battery life, drain and recharge rate")]
@@ -98,12 +109,36 @@ namespace Farmer {
             }
         }
 
+        private void Start() {
+            WallMaterial.SetTexture("_Texture2D", live);
+            OneWayMaterial.SetTexture("_Texture2D", live);
+            FloorMaterial.SetTexture("_Texture2D", rich);
+        }
+
         private void Update() {
             MoveUpdate();
             LookUpdate();
             CameraUpdate();
             if (Masked) {
                 Corruption += CorruptionRate * Time.deltaTime;
+            }
+            if (State == 0 && Corruption >= 20f) {
+                print("Change");
+                WallMaterial.SetTexture("_Texture2D", dying);
+                OneWayMaterial.SetTexture("_Texture2D", dying);
+                FloorMaterial.SetTexture("_Texture2D", dry);
+                State = 1;
+            } else if (State == 1 && Corruption >= 40f) {
+                WallMaterial.SetTexture("_Texture2D", dying2);
+                OneWayMaterial.SetTexture("_Texture2D", dying2);
+                State = 2;
+            } else if (State == 2 && Corruption >= 60f) {
+                WallMaterial.SetTexture("_Texture2D", dead);
+                OneWayMaterial.SetTexture("_Texture2D", dead);
+                FloorMaterial.SetTexture("_Texture2D", dark);
+                State = 3;
+            } else if (State == 3 && Corruption >= 100f) {
+                print("Dead");
             }
         }
 
@@ -125,12 +160,10 @@ namespace Farmer {
             if (!MaskDebounce) {
                 MaskDebounce = true;
                 if (Masked) {
-                    print("Take mask off");
                     Masked = false;
                     yield return new WaitForSeconds(MaskTime);
                 } else {
                     yield return new WaitForSeconds(MaskTime);
-                    print("Put mask on");
                     Corruption += MaskingCorruption;
                     Masked = true;
                 }
