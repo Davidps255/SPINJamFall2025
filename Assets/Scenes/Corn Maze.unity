@@ -18729,6 +18729,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2800000, guid: ddcb8823a2db89d4784fc2712a0fd427, type: 3}
     - target: {fileID: 8820579377069448809, guid: 2751404e9835de74b819d14086b26eea, type: 3}
+      propertyPath: live
+      value: 
+      objectReference: {fileID: 2800000, guid: 289a2ac9f42c701469a6838a56ecb624, type: 3}
+    - target: {fileID: 8820579377069448809, guid: 2751404e9835de74b819d14086b26eea, type: 3}
+      propertyPath: rich
+      value: 
+      objectReference: {fileID: 2800000, guid: 5612172256f8e7749a88788f279d02df, type: 3}
+    - target: {fileID: 8820579377069448809, guid: 2751404e9835de74b819d14086b26eea, type: 3}
       propertyPath: dying
       value: 
       objectReference: {fileID: 2800000, guid: 675e6a8516fc6044a847deebcb8f2256, type: 3}
