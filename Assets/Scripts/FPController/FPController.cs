@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 namespace Farmer {
     [RequireComponent(typeof(CharacterController))]
@@ -123,7 +124,6 @@ namespace Farmer {
                 Corruption += CorruptionRate * Time.deltaTime;
             }
             if (State == 0 && Corruption >= 20f) {
-                print("Change");
                 WallMaterial.SetTexture("_Texture2D", dying);
                 OneWayMaterial.SetTexture("_Texture2D", dying);
                 FloorMaterial.SetTexture("_Texture2D", dry);
@@ -138,9 +138,14 @@ namespace Farmer {
                 FloorMaterial.SetTexture("_Texture2D", dark);
                 State = 3;
             } else if (State == 3 && Corruption >= 100f) {
-                print("Dead");
+                SceneManager.LoadScene("DeadScene");
+            }
+
+            if (gameObject.transform.position.x >= 22.5) {
+                SceneManager.LoadScene("WinScene");
             }
         }
+
 
         #endregion
 

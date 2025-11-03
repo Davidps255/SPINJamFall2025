@@ -6,23 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/MainMenu.unity
+    guid: 4d8b363542d50a64fba7b487fdac26c0
   - enabled: 1
-    path: Assets/Scenes/House.unity
-    guid: 12f812af95ecd45469cef27b78057979
-  - enabled: 1
-    path: Assets/Scenes/Attic.unity
-    guid: b67a7d17b0bda0c498e73a0fac1c6faa
-  - enabled: 1
-    path: Assets/Scenes/Cornfield.unity
-    guid: 06c423b5723b60e4883795efcd1d07bf
-  - enabled: 1
-    path: Assets/Scenes/Main.unity
+    path: Assets/Scenes/CornMaze.unity
     guid: 94fee6ca46de2fe4c83b4f233b7e2ab5
   - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
-    guid: beadffde185894a488065345cab85437
+    path: Assets/Scenes/WinScene.unity
+    guid: 6552ab5af1ab7d240bcf7547a63cd9a4
+  - enabled: 1
+    path: Assets/Scenes/DeadScene.unity
+    guid: e0ce5fc643280004bb587d56775bd0b9
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
