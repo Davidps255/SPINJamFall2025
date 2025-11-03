@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Cornfield.unity
     guid: 06c423b5723b60e4883795efcd1d07bf
   - enabled: 1
-    path: Assets/Scenes/Corn Maze.unity
+    path: Assets/Scenes/Main.unity
     guid: 94fee6ca46de2fe4c83b4f233b7e2ab5
   - enabled: 1
     path: Assets/Scenes/Main Menu.unity
